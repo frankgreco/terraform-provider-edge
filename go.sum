@@ -92,8 +92,8 @@ github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5Kwzbycv
 github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568/go.mod h1:xEzjJPgXI435gkrCt3MPfRiAkVrwSbHsst4LCFVfpJc=
 github.com/frankgreco/edge-sdk-go v0.0.1-pre h1:5JL3t2Rs89Z0+uZgLFT8e/VuN1t/RKWa1ulcNmP5kGI=
 github.com/frankgreco/edge-sdk-go v0.0.1-pre/go.mod h1:/oed6CkOpqavoqwEnxBr6KaXHSuHG8uQcciT+wdHCkc=
-github.com/frankgreco/terraform-attribute-validators v0.0.0-20211231225301-eaae6c337ce3 h1:wh+2T/4cNDNRa4SZrDl2+neJiRABWRlzq3oyJpcOcaM=
-github.com/frankgreco/terraform-attribute-validators v0.0.0-20211231225301-eaae6c337ce3/go.mod h1:A48addlHyVOkcL9hPplQp0JKnIzrPQloGj+36EzkKAQ=
+github.com/frankgreco/terraform-attribute-validators v0.0.0-20220101203738-aa5b5f09fe3e h1:eg/B0vThovMkLWJLeNFLAdQOvISDcZLfTXrXuPpIIto=
+github.com/frankgreco/terraform-attribute-validators v0.0.0-20220101203738-aa5b5f09fe3e/go.mod h1:+TiTxPlgjbiAXdLBtdyYSsq63OELhHgOE7px2bVPxZM=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/gliderlabs/ssh v0.2.2/go.mod h1:U7qILu1NlMHj9FlMhZLlkCdDnU1DBEAqr0aevW3Awn0=
 github.com/go-git/gcfg v1.5.0 h1:Q5ViNfGF8zFgyJWPqYwA7qGFoMTEiBmdlkcfRmpIMa4=

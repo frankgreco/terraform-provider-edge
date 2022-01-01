@@ -4,12 +4,14 @@ go 1.17
 
 require (
 	github.com/frankgreco/edge-sdk-go v0.0.1-pre
-	github.com/frankgreco/terraform-attribute-validators v0.0.0-20211231225301-eaae6c337ce3
+	github.com/frankgreco/terraform-attribute-validators v0.0.0-20220101203738-aa5b5f09fe3e
 	github.com/hashicorp/terraform-plugin-docs v0.5.1
 	github.com/hashicorp/terraform-plugin-framework v0.5.0
 	github.com/hashicorp/terraform-plugin-go v0.4.0
 	github.com/mattbaird/jsonpatch v0.0.0-20200820163806-098863c1fc24
 )
+
+// replace github.com/frankgreco/terraform-attribute-validators => ../terraform-attribute-validators
 
 require (
 	cloud.google.com/go v0.99.0 // indirect

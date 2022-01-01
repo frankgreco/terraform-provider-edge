@@ -37,6 +37,9 @@ func resourceFirewallRulesetSchema(isDataSource bool) tfsdk.Schema {
 		},
 		Blocks: map[string]tfsdk.Block{
 			"rule": {
+				Validators: []tfsdk.AttributeValidator{
+					validators.Unique("priority"),
+				},
 				NestingMode: tfsdk.BlockNestingModeSet,
 				Attributes: map[string]tfsdk.Attribute{
 					"priority": {
