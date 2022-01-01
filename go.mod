@@ -3,7 +3,7 @@ module terraform-provider-edge
 go 1.17
 
 require (
-	github.com/frankgreco/edge-sdk-go v0.0.1-pre
+	github.com/frankgreco/edge-sdk-go v0.0.0-20220101210748-787f403d1edc
 	github.com/frankgreco/terraform-attribute-validators v0.0.0-20220101203738-aa5b5f09fe3e
 	github.com/hashicorp/terraform-plugin-docs v0.5.1
 	github.com/hashicorp/terraform-plugin-framework v0.5.0
