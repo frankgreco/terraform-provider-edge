@@ -3,12 +3,12 @@
 page_title: "edge_firewall_ruleset Data Source - terraform-provider-edge"
 subcategory: ""
 description: |-
-  
+  A grouping of firewall rules. The firewall is not enforced unless attached to an interface which can be done with the firewall_ruleset_attachment resource.
 ---
 
 # edge_firewall_ruleset (Data Source)
 
-
+A grouping of firewall rules. The firewall is not enforced unless attached to an interface which can be done with the `firewall_ruleset_attachment` resource.
 
 
 
@@ -17,62 +17,56 @@ description: |-
 
 ### Required
 
-- **name** (String)
-
-### Optional
-
-- **description** (String)
-- **rule** (Block Set) (see [below for nested schema](#nestedblock--rule))
+- **name** (String) A unique, human readable name for this ruleset.
 
 ### Read-Only
 
-- **default_action** (String)
+- **default_action** (String) The default action to take if traffic is not matched by one of the rules in the ruleset. Must be one of `reject`, `drop`, `accept`.
+- **description** (String) A human readable description for this ruleset.
+- **rule** (Block Set) (see [below for nested schema](#nestedblock--rule))
 
 <a id="nestedblock--rule"></a>
 ### Nested Schema for `rule`
 
-Optional:
-
-- **destination** (Attributes) (see [below for nested schema](#nestedatt--rule--destination))
-- **source** (Attributes) (see [below for nested schema](#nestedatt--rule--source))
-- **state** (Attributes) (see [below for nested schema](#nestedatt--rule--state))
-
 Read-Only:
 
-- **action** (String)
-- **description** (String)
-- **priority** (Number)
-- **protocol** (String)
+- **action** (String) The action to take on traffic that matches this rule. Must be one of `reject`, `drop`, `accept`.
+- **description** (String) A human readable description for this rule.
+- **destination** (Attributes) Details about the traffic's destination. If not specified, all sources will be evaluated. (see [below for nested schema](#nestedatt--rule--destination))
+- **priority** (Number) The priority of this rule. The higher the priority, the higher the precedence.
+- **protocol** (String) The protocol this rule applies to. If not specified, this rule applies to all protcols. Must be one of `tcp`, `udp`, `tcp_udp`.
+- **source** (Attributes) Details about the traffic's source. If not specified, all sources will be evaluated. (see [below for nested schema](#nestedatt--rule--source))
+- **state** (Attributes) This describes the connection state of a packet. (see [below for nested schema](#nestedatt--rule--state))
 
 <a id="nestedatt--rule--destination"></a>
 ### Nested Schema for `rule.destination`
 
-Optional:
+Read-Only:
 
-- **address** (String)
-- **from_port** (Number)
-- **to_port** (Number)
+- **address** (String) The cidr this rule applies to. If not provided, it is treated as 0.0.0.0/0.
+- **from_port** (Number) The first destination port in the port range this rule will apply to.
+- **to_port** (Number) The first destination port in the port range this rule will apply to. If only one port is desired, set to the same value in `from_port`.
 
 
 <a id="nestedatt--rule--source"></a>
 ### Nested Schema for `rule.source`
 
-Optional:
+Read-Only:
 
-- **address** (String)
-- **from_port** (Number)
+- **address** (String) The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`.
+- **from_port** (Number) The first destination port in the port range this rule will apply to.
 - **mac** (String)
-- **to_port** (Number)
+- **to_port** (Number) The first destination port in the port range this rule will apply to. If only one port is desired, set to the same value in `from_port`.
 
 
 <a id="nestedatt--rule--state"></a>
 ### Nested Schema for `rule.state`
 
-Optional:
+Read-Only:
 
-- **established** (Boolean)
-- **invalid** (Boolean)
-- **new** (Boolean)
-- **related** (Boolean)
+- **established** (Boolean) Match packets that are part of a two-way connection.
+- **invalid** (Boolean) Match packets that cannot be identified.
+- **new** (Boolean) Match packets creating a new connection.
+- **related** (Boolean) Match packets related to established connections.
 
 

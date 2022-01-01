@@ -24,22 +24,23 @@ type provider struct {
 
 func (p *provider) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
+		Description: "The Edge provider provides the ability to configure a Ubiquiti Edge device.",
 		Attributes: map[string]tfsdk.Attribute{
 			"host": {
-				Type:     types.StringType,
-				Optional: true,
-				Computed: true,
+				Type:        types.StringType,
+				Optional:    true,
+				Description: "Edge router URL. Can be set with `EDGE_HOST`.",
 			},
 			"username": {
-				Type:     types.StringType,
-				Optional: true,
-				Computed: true,
+				Type:        types.StringType,
+				Optional:    true,
+				Description: "Admin username. Can be set with `EDGE_USERNAME`.",
 			},
 			"password": {
-				Type:      types.StringType,
-				Optional:  true,
-				Computed:  true,
-				Sensitive: true,
+				Type:        types.StringType,
+				Optional:    true,
+				Sensitive:   true,
+				Description: "Admin password. Can be set with `EDGE_PASSWORD`.",
 			},
 		},
 	}, nil
@@ -141,7 +142,7 @@ func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderReq
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to create client",
-			"Unable to create hashicups client:\n\n"+err.Error(),
+			"Unable to create edge client:\n\n"+err.Error(),
 		)
 		return
 	}
