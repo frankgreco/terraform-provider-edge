@@ -6,120 +6,18 @@ import (
 	"log"
 
 	"github.com/frankgreco/edge-sdk-go/types"
-
 	"github.com/mattbaird/jsonpatch"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
-	tftypes "github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type resourceFirewallRulesetType struct{}
 
-// Order Resource schema
 func (r resourceFirewallRulesetType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
-	return tfsdk.Schema{
-		Attributes: map[string]tfsdk.Attribute{
-			"name": {
-				Type:          tftypes.StringType,
-				Required:      true,
-				PlanModifiers: []tfsdk.AttributePlanModifier{tfsdk.RequiresReplace()},
-			},
-			"description": {
-				Type:     tftypes.StringType,
-				Optional: true,
-			},
-			"default_action": {
-				Type:     tftypes.StringType,
-				Required: true,
-			},
-		},
-		Blocks: map[string]tfsdk.Block{
-			"rule": {
-				NestingMode: tfsdk.BlockNestingModeSet,
-				Attributes: map[string]tfsdk.Attribute{
-					"priority": {
-						Type:     tftypes.NumberType,
-						Required: true,
-					},
-					"description": {
-						Type:     tftypes.StringType,
-						Optional: true,
-					},
-					"action": {
-						Type:     tftypes.StringType,
-						Required: true,
-					},
-					"protocol": {
-						Type:     tftypes.StringType,
-						Required: true,
-					},
-					"state": {
-						Attributes: tfsdk.SingleNestedAttributes(map[string]tfsdk.Attribute{
-							"established": {
-								Type:     tftypes.BoolType,
-								Optional: true,
-							},
-							"new": {
-								Type:     tftypes.BoolType,
-								Optional: true,
-							},
-							"related": {
-								Type:     tftypes.BoolType,
-								Optional: true,
-							},
-							"invalid": {
-								Type:     tftypes.BoolType,
-								Optional: true,
-							},
-						}),
-						Optional: true,
-					},
-					"destination": {
-						Attributes: tfsdk.SingleNestedAttributes(map[string]tfsdk.Attribute{
-							"from_port": {
-								Type:     tftypes.NumberType,
-								Required: true,
-							},
-							"to_port": {
-								Type:     tftypes.NumberType,
-								Required: true,
-							},
-							"address": {
-								Type:     tftypes.StringType,
-								Optional: true,
-							},
-						}),
-						Required: true,
-					},
-					"source": {
-						Attributes: tfsdk.SingleNestedAttributes(map[string]tfsdk.Attribute{
-							"from_port": {
-								Type:     tftypes.NumberType,
-								Required: true,
-							},
-							"to_port": {
-								Type:     tftypes.NumberType,
-								Required: true,
-							},
-							"address": {
-								Type:     tftypes.StringType,
-								Optional: true,
-							},
-							"mac": {
-								Type:     tftypes.StringType,
-								Optional: true,
-							},
-						}),
-						Optional: true,
-					},
-				},
-			},
-		},
-	}, nil
+	return resourceFirewallRulesetSchema(false), nil
 }
 
-// New resource instance
 func (r resourceFirewallRulesetType) NewResource(_ context.Context, p tfsdk.Provider) (tfsdk.Resource, diag.Diagnostics) {
 	return resourceFirewallRuleset{
 		p: *(p.(*provider)),
@@ -130,7 +28,6 @@ type resourceFirewallRuleset struct {
 	p provider
 }
 
-// Create a new resource
 func (r resourceFirewallRuleset) Create(ctx context.Context, req tfsdk.CreateResourceRequest, resp *tfsdk.CreateResourceResponse) {
 	if !r.p.configured {
 		resp.Diagnostics.AddError(
@@ -165,7 +62,6 @@ func (r resourceFirewallRuleset) Create(ctx context.Context, req tfsdk.CreateRes
 	}
 }
 
-// Read resource information
 func (r resourceFirewallRuleset) Read(ctx context.Context, req tfsdk.ReadResourceRequest, resp *tfsdk.ReadResourceResponse) {
 	if !r.p.configured {
 		resp.Diagnostics.AddError(
@@ -200,7 +96,6 @@ func (r resourceFirewallRuleset) Read(ctx context.Context, req tfsdk.ReadResourc
 	}
 }
 
-// Update resource
 func (r resourceFirewallRuleset) Update(ctx context.Context, req tfsdk.UpdateResourceRequest, resp *tfsdk.UpdateResourceResponse) {
 	var current types.Ruleset
 	{
@@ -275,7 +170,6 @@ func (r resourceFirewallRuleset) Update(ctx context.Context, req tfsdk.UpdateRes
 	}
 }
 
-// Delete resource
 func (r resourceFirewallRuleset) Delete(ctx context.Context, req tfsdk.DeleteResourceRequest, resp *tfsdk.DeleteResourceResponse) {
 	if !r.p.configured {
 		resp.Diagnostics.AddError(

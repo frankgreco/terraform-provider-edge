@@ -3,12 +3,12 @@
 page_title: "edge_firewall_ruleset_attachment Resource - terraform-provider-edge"
 subcategory: ""
 description: |-
-  
+  Attach a firewall ruleset to inbound, outbound, and local traffic.
 ---
 
 # edge_firewall_ruleset_attachment (Resource)
 
-
+Attach a firewall ruleset to inbound, outbound, and local traffic.
 
 
 
@@ -17,12 +17,12 @@ description: |-
 
 ### Required
 
-- **interface** (String)
+- **interface** (String) The interface to attach firewall rules to.
 
 ### Optional
 
-- **in** (String)
-- **local** (String)
-- **out** (String)
+- **in** (String) Match inbound packets.
+- **local** (String) Match local packets.
+- **out** (String) Match outbound packets.
 
 

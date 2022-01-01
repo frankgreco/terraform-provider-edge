@@ -7,17 +7,17 @@ Terraform wrapper for [edge-sdk-go](https://github.com/frankgreco/edge-sdk-go).
 You can browse documentation on the [Terraform provider registry](https://registry.terraform.io/providers/frankgreco/edge/latest/docs).
 
 ## Supported EdgeOS Versions
-The only version i've tested this against is the version that I use, `v2.0.9-hotfix.2`. I plan on making a full compatability matrix as I get further into development.
+The only version i've tested this against is the version that I use, `v2.0.9`. I plan on making a full compatability matrix as I get further into development.
 
 ## Using the Provider
-I believe anything `v1.0` and new will work.
+I believe anything `v1.0` or newer will work.
 
 ```
 terraform {
   required_providers {
     edge = {
       source  = "frankgreco/edge"
-      version = "0.0.1-pre"
+      version = "0.0.2-pre"
     }
   }
 }
