@@ -3,7 +3,7 @@ module terraform-provider-edge
 go 1.17
 
 require (
-	github.com/frankgreco/edge-sdk-go v0.0.0-20220101235342-c8d92c29f927
+	github.com/frankgreco/edge-sdk-go v0.0.0-20220102231356-3002af98ab62
 	github.com/frankgreco/terraform-attribute-validators v0.0.0-20220101203738-aa5b5f09fe3e
 	github.com/hashicorp/terraform-plugin-docs v0.5.1
 	github.com/hashicorp/terraform-plugin-framework v0.5.0
@@ -14,7 +14,7 @@ require (
 // For local development:
 // replace (
 // 	github.com/frankgreco/edge-sdk-go => ../edge-sdk-go
-// 	replace github.com/frankgreco/terraform-attribute-validators => ../terraform-attribute-validators
+// 	github.com/frankgreco/terraform-attribute-validators => ../terraform-attribute-validators
 // )
 
 require (

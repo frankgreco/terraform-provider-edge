@@ -155,6 +155,8 @@ func (p *provider) GetResources(_ context.Context) (map[string]tfsdk.ResourceTyp
 	return map[string]tfsdk.ResourceType{
 		"edge_firewall_ruleset":            resourceFirewallRulesetType{},
 		"edge_firewall_ruleset_attachment": resourceFirewallRulesetAttachmentType{},
+		"edge_firewall_address_group":      resourceFirewallAddressGroupType{},
+		// "edge_port_group":                  resourcePortGroupType{},
 	}, nil
 }
 
