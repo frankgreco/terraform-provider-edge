@@ -157,7 +157,7 @@ func (r resourceFirewallRuleset) Update(ctx context.Context, req tfsdk.UpdateRes
 	updated, err := r.p.client.Firewall.UpdateRuleset(ctx, &current, patches)
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"There was an issue deleting the ruleset.",
+			"There was an issue updating the ruleset.",
 			err.Error(),
 		)
 		return

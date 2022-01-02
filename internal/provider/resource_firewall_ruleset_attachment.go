@@ -2,9 +2,12 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/frankgreco/edge-sdk-go/types"
+	"github.com/mattbaird/jsonpatch"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
@@ -125,6 +128,75 @@ func (r resourceFirewallRulesetAttachment) Read(ctx context.Context, req tfsdk.R
 
 // Update resource
 func (r resourceFirewallRulesetAttachment) Update(ctx context.Context, req tfsdk.UpdateResourceRequest, resp *tfsdk.UpdateResourceResponse) {
+	var current types.FirewallAttachment
+	{
+		diagnostics := req.State.Get(ctx, &current)
+		resp.Diagnostics.Append(diagnostics...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+
+		log.Printf("[TRACE] current firewall attachment struct: %+v", current)
+	}
+
+	var desired types.FirewallAttachment
+	{
+		diags := req.Plan.Get(ctx, &desired)
+		resp.Diagnostics.Append(diags...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		log.Printf("[TRACE] desired firewall attachment struct: %+v", desired)
+	}
+
+	var patches []jsonpatch.JsonPatchOperation
+	{
+		cData, err := json.Marshal(&current)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Could not marshal firewall attachment from state",
+				err.Error(),
+			)
+			return
+		}
+		log.Printf("[TRACE] current firewall attachment json: %s", string(cData))
+
+		dData, err := json.Marshal(&desired)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Could not marshal firewall attachment from plan",
+				err.Error(),
+			)
+			return
+		}
+		log.Printf("[TRACE] desired firewall attachment json: %s", string(dData))
+
+		p, err := jsonpatch.CreatePatch(cData, dData)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Could not create patch document.",
+				err.Error(),
+			)
+			return
+		}
+		patches = p
+		log.Printf("[DEBUG] patch document: %+v", patches)
+	}
+
+	updated, err := r.p.client.Interfaces.Ethernet.UpdateFirewallRulesetAttachment(ctx, &current, patches)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"There was an issue updating the firewall attachment.",
+			err.Error(),
+		)
+		return
+	}
+
+	diagnostics := resp.State.Set(ctx, *updated)
+	resp.Diagnostics.Append(diagnostics...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 // Delete resource
