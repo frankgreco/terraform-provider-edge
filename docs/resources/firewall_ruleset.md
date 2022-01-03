@@ -13,21 +13,9 @@ A grouping of firewall rules. The firewall is not enforced unless attached to an
 ## Example Usage
 
 ```terraform
-resource "edge_firewall_address_group" "router" {
-    name        = "router"
-    description = "router interface addresses"
-
-    cidrs = [
-        "192.168.2.1",
-        "192.168.3.1",
-        "192.168.4.1",
-    ]
-}
-
-
 resource "edge_firewall_ruleset" "example" {
   name            = "example"
-  description     = "drop all ssh traffic to the router"
+  description     = "drop all traffic on its way to 192.168.2.1/24 over port 80"
   default_action  = "accept"
 
   rule {
@@ -37,13 +25,13 @@ resource "edge_firewall_ruleset" "example" {
     protocol    = "tcp"
 
     destination = {
-      from_port = 22
-      to_port   = 22
-
-      address_group = edge_firewall_address_group.router.name
+      address = "192.168.2.1/24"
+      port    = {
+          from = 80
+          to   = 80
+      }
     }
   }
-
 }
 ```
 
@@ -81,9 +69,19 @@ Optional:
 
 Optional:
 
+- **address** (String) The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`.
 - **address_group** (String) The address group this rule applies to. If not provided, all addresses will be matched.
-- **from_port** (Number) The first destination port in the port range this rule will apply to.
-- **to_port** (Number) The first destination port in the port range this rule will apply to. If only one port is desired, set to the same value in `from_port`.
+- **port** (Attributes) A port range. (see [below for nested schema](#nestedatt--rule--destination--port))
+- **port_group** (String) The port group this rule applies to. If not provided, all ports will be matched.
+
+<a id="nestedatt--rule--destination--port"></a>
+### Nested Schema for `rule.destination.port`
+
+Optional:
+
+- **from** (Number)
+- **to** (Number)
+
 
 
 <a id="nestedatt--rule--source"></a>
@@ -92,9 +90,19 @@ Optional:
 Optional:
 
 - **address** (String) The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`.
-- **from_port** (Number) The first destination port in the port range this rule will apply to.
+- **address_group** (String) The address group this rule applies to. If not provided, all addresses will be matched.
 - **mac** (String)
-- **to_port** (Number) The first destination port in the port range this rule will apply to. If only one port is desired, set to the same value in `from_port`.
+- **port** (Attributes) A port range. (see [below for nested schema](#nestedatt--rule--source--port))
+- **port_group** (String) The port group this rule applies to. If not provided, all ports will be matched.
+
+<a id="nestedatt--rule--source--port"></a>
+### Nested Schema for `rule.source.port`
+
+Optional:
+
+- **from** (Number)
+- **to** (Number)
+
 
 
 <a id="nestedatt--rule--state"></a>

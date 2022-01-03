@@ -16,6 +16,48 @@ import (
 type resourceFirewallRulesetType struct{}
 
 func (r resourceFirewallRulesetType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
+	port := tfsdk.Attribute{
+		Attributes: tfsdk.SingleNestedAttributes(map[string]tfsdk.Attribute{
+			"from": {
+				Type:     tftypes.NumberType,
+				Required: true,
+				Validators: []tfsdk.AttributeValidator{
+					validators.Range(float64(1), float64(65535.0)),
+				},
+			},
+			"to": {
+				Type:     tftypes.NumberType,
+				Required: true,
+				Validators: []tfsdk.AttributeValidator{
+					validators.Range(float64(1), float64(65535.0)),
+				},
+			},
+		}),
+		Optional:    true,
+		Description: "A port range.",
+	}
+
+	address := tfsdk.Attribute{
+		Type:        tftypes.StringType,
+		Optional:    true,
+		Description: "The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`.",
+		Validators: []tfsdk.AttributeValidator{
+			validators.Cidr(),
+		},
+	}
+
+	addressGroup := tfsdk.Attribute{
+		Type:        tftypes.StringType,
+		Optional:    true,
+		Description: "The address group this rule applies to. If not provided, all addresses will be matched.",
+	}
+
+	portGroup := tfsdk.Attribute{
+		Type:        tftypes.StringType,
+		Optional:    true,
+		Description: "The port group this rule applies to. If not provided, all ports will be matched.",
+	}
+
 	return tfsdk.Schema{
 		Description: "A grouping of firewall rules. The firewall is not enforced unless attached to an interface which can be done with the `firewall_ruleset_attachment` resource.",
 		Attributes: map[string]tfsdk.Attribute{
@@ -104,63 +146,28 @@ func (r resourceFirewallRulesetType) GetSchema(_ context.Context) (tfsdk.Schema,
 					"destination": {
 						Description: "Details about the traffic's destination. If not specified, all sources will be evaluated.",
 						Attributes: tfsdk.SingleNestedAttributes(map[string]tfsdk.Attribute{
-							"from_port": {
-								Type:        tftypes.NumberType,
-								Required:    true,
-								Description: "The first destination port in the port range this rule will apply to.",
-								Validators: []tfsdk.AttributeValidator{
-									validators.Range(float64(1), float64(65535.0)),
-								},
-							},
-							"to_port": {
-								Type:        tftypes.NumberType,
-								Required:    true,
-								Description: "The first destination port in the port range this rule will apply to. If only one port is desired, set to the same value in `from_port`.",
-								Validators: []tfsdk.AttributeValidator{
-									validators.Range(float64(1), float64(65535.0)),
-								},
-							},
-							"address_group": {
-								Type:        tftypes.StringType,
-								Optional:    true,
-								Description: "The address group this rule applies to. If not provided, all addresses will be matched.",
-							},
+							"address":       address,
+							"port":          port,
+							"address_group": addressGroup,
+							"port_group":    portGroup,
 						}),
 						Optional: true,
+						// Need a validator to ensure address conflicts with address_group and port conflicts with port_group.
 					},
 					"source": {
 						Description: "Details about the traffic's source. If not specified, all sources will be evaluated.",
 						Attributes: tfsdk.SingleNestedAttributes(map[string]tfsdk.Attribute{
-							"from_port": {
-								Type:        tftypes.NumberType,
-								Required:    true,
-								Description: "The first destination port in the port range this rule will apply to.",
-								Validators: []tfsdk.AttributeValidator{
-									validators.Range(float64(1), float64(65535.0)),
-								},
-							},
-							"to_port": {
-								Type:        tftypes.NumberType,
-								Required:    true,
-								Description: "The first destination port in the port range this rule will apply to. If only one port is desired, set to the same value in `from_port`.",
-								Validators: []tfsdk.AttributeValidator{
-									validators.Range(float64(1), float64(65535.0)),
-								},
-							},
-							"address": {
-								Type:        tftypes.StringType,
-								Optional:    true,
-								Description: "The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`.",
-								Validators: []tfsdk.AttributeValidator{
-									validators.Cidr(),
-								},
-							},
+							"address":       address,
+							"port":          port,
+							"address_group": addressGroup,
+							"port_group":    portGroup,
 							"mac": {
 								Type:     tftypes.StringType,
 								Optional: true,
 							},
 						}),
 						Optional: true,
+						// Need a validator to ensure address conflicts with address_group and port conflicts with port_group.
 					},
 				},
 			},
