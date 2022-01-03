@@ -34,6 +34,28 @@ install: build
 fmt:
 	@gofmt -e -s -l -w $(ALL_SRC)
 
+# Run 'brew install coreutils' to install sha256sum on Mac
+define docs-generate-sum
+	rm -f $@; \
+	( \
+		find docs -type f -print0 | xargs -0 sha256sum; \
+	) | sort -k 2 > $@
+endef
+
+docs-generate.sum: docs-generate.sum.current
+	@if cmp $@.current $@; then \
+		echo "docs up-to-date"; \
+	else \
+		echo go generate ./...; \
+		go generate ./...; \
+		$(docs-generate-sum); \
+	fi
+
+docs-generate.sum.current: .FORCE
+	@$(docs-generate-sum)
+
 .PHONY: generate
-generate:
-	@go generate ./...
+generate: docs-generate.sum
+
+.PHONY: .FORCE
+.FORCE:

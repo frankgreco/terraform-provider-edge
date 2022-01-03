@@ -3,3 +3,5 @@
 examples/.terraform/
 examples/*.tf
 examples/*.hcl
+
+/docs-generate.sum.current
