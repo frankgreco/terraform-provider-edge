@@ -43,7 +43,7 @@ Read-Only:
 
 Read-Only:
 
-- **address** (String) The cidr this rule applies to. If not provided, it is treated as 0.0.0.0/0.
+- **address_group** (String) The address group this rule applies to. If not provided, all addresses will be matched.
 - **from_port** (Number) The first destination port in the port range this rule will apply to.
 - **to_port** (Number) The first destination port in the port range this rule will apply to. If only one port is desired, set to the same value in `from_port`.
 

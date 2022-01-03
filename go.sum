@@ -90,8 +90,8 @@ github.com/evanphx/json-patch v0.5.2/go.mod h1:ZWS5hhDbVDyob71nXKNL0+PWn6ToqBHMi
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568/go.mod h1:xEzjJPgXI435gkrCt3MPfRiAkVrwSbHsst4LCFVfpJc=
-github.com/frankgreco/edge-sdk-go v0.0.0-20220102231356-3002af98ab62 h1:UjY7LOuE5oDDa3m+7XkmbAzPV8nA3sOQBtong4di+r0=
-github.com/frankgreco/edge-sdk-go v0.0.0-20220102231356-3002af98ab62/go.mod h1:6dXH12TAP9AOlXclxvW07g6iPNCKzXgu/P24gnLEJG4=
+github.com/frankgreco/edge-sdk-go v0.0.0-20220103003849-d8d96d52f627 h1:bIi0ZqWVsrReGle4mst/iPfcFZud/20Rv+TAsmigXGQ=
+github.com/frankgreco/edge-sdk-go v0.0.0-20220103003849-d8d96d52f627/go.mod h1:6dXH12TAP9AOlXclxvW07g6iPNCKzXgu/P24gnLEJG4=
 github.com/frankgreco/terraform-attribute-validators v0.0.0-20220101203738-aa5b5f09fe3e h1:eg/B0vThovMkLWJLeNFLAdQOvISDcZLfTXrXuPpIIto=
 github.com/frankgreco/terraform-attribute-validators v0.0.0-20220101203738-aa5b5f09fe3e/go.mod h1:+TiTxPlgjbiAXdLBtdyYSsq63OELhHgOE7px2bVPxZM=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=

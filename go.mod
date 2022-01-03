@@ -3,19 +3,13 @@ module terraform-provider-edge
 go 1.17
 
 require (
-	github.com/frankgreco/edge-sdk-go v0.0.0-20220102231356-3002af98ab62
+	github.com/frankgreco/edge-sdk-go v0.0.0-20220103003849-d8d96d52f627
 	github.com/frankgreco/terraform-attribute-validators v0.0.0-20220101203738-aa5b5f09fe3e
 	github.com/hashicorp/terraform-plugin-docs v0.5.1
 	github.com/hashicorp/terraform-plugin-framework v0.5.0
 	github.com/hashicorp/terraform-plugin-go v0.4.0
 	github.com/mattbaird/jsonpatch v0.0.0-20200820163806-098863c1fc24
 )
-
-// For local development:
-// replace (
-// 	github.com/frankgreco/edge-sdk-go => ../edge-sdk-go
-// 	github.com/frankgreco/terraform-attribute-validators => ../terraform-attribute-validators
-// )
 
 require (
 	cloud.google.com/go v0.99.0 // indirect
@@ -78,5 +72,11 @@ require (
 	google.golang.org/grpc v1.40.1 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )
+
+// For local development:
+// replace (
+// 	github.com/frankgreco/edge-sdk-go => ../edge-sdk-go
+// 	github.com/frankgreco/terraform-attribute-validators => ../terraform-attribute-validators
+// )
 
 replace google.golang.org/api => google.golang.org/api v0.63.0

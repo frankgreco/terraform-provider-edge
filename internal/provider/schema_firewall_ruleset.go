@@ -124,14 +124,11 @@ func resourceFirewallRulesetSchema(isDataSource bool) tfsdk.Schema {
 									validators.Range(float64(1), float64(65535.0)),
 								},
 							},
-							"address": {
+							"address_group": {
 								Type:        tftypes.StringType,
 								Optional:    !isDataSource,
 								Computed:    isDataSource,
-								Description: "The cidr this rule applies to. If not provided, it is treated as 0.0.0.0/0.",
-								Validators: []tfsdk.AttributeValidator{
-									validators.Cidr(),
-								},
+								Description: "The address group this rule applies to. If not provided, all addresses will be matched.",
 							},
 						}),
 						Optional: !isDataSource,
