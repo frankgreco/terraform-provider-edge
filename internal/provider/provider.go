@@ -156,13 +156,11 @@ func (p *provider) GetResources(_ context.Context) (map[string]tfsdk.ResourceTyp
 		"edge_firewall_ruleset":            resourceFirewallRulesetType{},
 		"edge_firewall_ruleset_attachment": resourceFirewallRulesetAttachmentType{},
 		"edge_firewall_address_group":      resourceFirewallAddressGroupType{},
-		// "edge_port_group":                  resourcePortGroupType{},
 	}, nil
 }
 
 func (p *provider) GetDataSources(_ context.Context) (map[string]tfsdk.DataSourceType, diag.Diagnostics) {
 	return map[string]tfsdk.DataSourceType{
-		"edge_firewall_ruleset":   dataSourceFirewallRulesetType{},
 		"edge_interface_ethernet": dataSourceInterfaceEthernetType{},
 	}, nil
 }
