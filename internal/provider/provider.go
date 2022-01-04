@@ -24,7 +24,11 @@ type provider struct {
 
 func (p *provider) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
-		Description: "The Edge provider provides the ability to configure a Ubiquiti Edge device.",
+		MarkdownDescription: `
+The Edge provider provides the ability to configure a Ubiquiti Edge device.
+
+~> You must use ` + "`-parallelism=1` on all `destroy` and `apply` " + `operations because the EdgeOS configuration API is not safe for concurrent use.
+`,
 		Attributes: map[string]tfsdk.Attribute{
 			"host": {
 				Type:        types.StringType,

@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"log"
 
+	"terraform-provider-edge/internal/utils"
+
 	"github.com/frankgreco/edge-sdk-go/types"
-	"github.com/frankgreco/terraform-attribute-validators"
+	"github.com/frankgreco/terraform-helpers/validators"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	tftypes "github.com/hashicorp/terraform-plugin-framework/types"
@@ -114,7 +116,7 @@ func (r resourceFirewallRulesetType) GetSchema(_ context.Context) (tfsdk.Schema,
 						Optional:    true,
 						Description: "The protocol this rule applies to. If not specified, this rule applies to all protcols. Must be one of `tcp`, `udp`, `tcp_udp`.",
 						Validators: []tfsdk.AttributeValidator{
-							validators.StringInSlice(true, "tcp", "udp", "tcp_udp"),
+							validators.StringInSlice(true, "tcp", "udp", "tcp_udp", "all", "*"),
 						},
 					},
 					"state": {
@@ -186,71 +188,32 @@ type resourceFirewallRuleset struct {
 }
 
 func (r resourceFirewallRuleset) Create(ctx context.Context, req tfsdk.CreateResourceRequest, resp *tfsdk.CreateResourceResponse) {
-	if !r.p.configured {
-		resp.Diagnostics.AddError(
-			"The provider has not been configured!",
-			"Please configure the provider.",
-		)
-		return
-	}
-
-	var plan types.Ruleset
-	{
-		diags := req.Plan.Get(ctx, &plan)
-		resp.Diagnostics.Append(diags...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-	}
-
-	actual, err := r.p.client.Firewall.CreateRuleset(ctx, &plan)
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"There was an issue creating the ruleset.",
-			err.Error(),
-		)
-		return
-	}
-
-	diags := resp.State.Set(ctx, *actual)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	utils.CreateFunc(
+		ctx,
+		req,
+		resp,
+		types.Ruleset{},
+		"firewall ruleset",
+		r.p.configured,
+		func(ctx context.Context, plan interface{}) (interface{}, error) {
+			ruleset := plan.(types.Ruleset)
+			return r.p.client.Firewall.CreateRuleset(ctx, &ruleset)
+		},
+	)
 }
 
 func (r resourceFirewallRuleset) Read(ctx context.Context, req tfsdk.ReadResourceRequest, resp *tfsdk.ReadResourceResponse) {
-	if !r.p.configured {
-		resp.Diagnostics.AddError(
-			"The provider has not been configured!",
-			"Please configure the provider.",
-		)
-		return
-	}
-
-	var state types.Ruleset
-	{
-		diagnostics := req.State.Get(ctx, &state)
-		resp.Diagnostics.Append(diagnostics...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-	}
-
-	ruleset, err := r.p.client.Firewall.GetRuleset(ctx, state.Name)
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"There was an issue reading the ruleset.",
-			err.Error(),
-		)
-		return
-	}
-
-	diagnostics := resp.State.Set(ctx, *ruleset)
-	resp.Diagnostics.Append(diagnostics...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	utils.ReadFunc(
+		ctx,
+		req,
+		resp,
+		"name",
+		"port group",
+		r.p.configured,
+		func(ctx context.Context, id string) (interface{}, error) {
+			return r.p.client.Firewall.GetRuleset(ctx, id)
+		},
+	)
 }
 
 func (r resourceFirewallRuleset) Update(ctx context.Context, req tfsdk.UpdateResourceRequest, resp *tfsdk.UpdateResourceResponse) {
@@ -328,55 +291,28 @@ func (r resourceFirewallRuleset) Update(ctx context.Context, req tfsdk.UpdateRes
 }
 
 func (r resourceFirewallRuleset) Delete(ctx context.Context, req tfsdk.DeleteResourceRequest, resp *tfsdk.DeleteResourceResponse) {
-	if !r.p.configured {
-		resp.Diagnostics.AddError(
-			"The provider has not been configured!",
-			"Please configure the provider.",
-		)
-		return
-	}
-
-	var state types.Ruleset
-	{
-		diagnostics := req.State.Get(ctx, &state)
-		resp.Diagnostics.Append(diagnostics...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-	}
-
-	if err := r.p.client.Firewall.DeleteRuleset(ctx, state.Name); err != nil {
-		resp.Diagnostics.AddError(
-			"There was an issue deleting the ruleset.",
-			err.Error(),
-		)
-		return
-	}
-
-	resp.State.RemoveResource(ctx)
+	utils.DeleteFunc(
+		ctx,
+		req,
+		resp,
+		"name",
+		"firewall ruleset",
+		r.p.configured,
+		func(ctx context.Context, id string) error {
+			return r.p.client.Firewall.DeleteRuleset(ctx, id)
+		},
+	)
 }
 
 func (r resourceFirewallRuleset) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
-	if !r.p.configured {
-		resp.Diagnostics.AddError(
-			"The provider has not been configured!",
-			"Please configure the provider.",
-		)
-		return
-	}
-
-	ruleset, err := r.p.client.Firewall.GetRuleset(ctx, req.ID)
-	if err != nil {
-		resp.Diagnostics.AddError(
-			"There was an issue reading the ruleset.",
-			err.Error(),
-		)
-		return
-	}
-
-	diagnostics := resp.State.Set(ctx, *ruleset)
-	resp.Diagnostics.Append(diagnostics...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	utils.ImportFunc(
+		ctx,
+		req,
+		resp,
+		"firewall ruleset",
+		r.p.configured,
+		func(ctx context.Context, id string) (interface{}, error) {
+			return r.p.client.Firewall.GetRuleset(ctx, id)
+		},
+	)
 }

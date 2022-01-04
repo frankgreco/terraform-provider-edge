@@ -1,7 +1,8 @@
-*/*.tfstate
-*/*.tfstate.*
 examples/.terraform/
 examples/*.tf
 examples/*.hcl
+
+examples/guides/*/*.tfstate*
+examples/guides/*/provider.tf
 
 /docs-generate.sum.current
