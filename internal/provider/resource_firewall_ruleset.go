@@ -36,28 +36,38 @@ func (r resourceFirewallRulesetType) GetSchema(_ context.Context) (tfsdk.Schema,
 			},
 		}),
 		Optional:    true,
-		Description: "A port range.",
+		Description: "A port range. Conflicts with `port_group`.",
+		Validators: []tfsdk.AttributeValidator{
+			validators.ConflictsWith("port_group"),
+		},
+	}
+
+	portGroup := tfsdk.Attribute{
+		Type:        tftypes.StringType,
+		Optional:    true,
+		Description: "The port group this rule applies to. If not provided, all ports will be matched. Conflicts with `port`.",
+		Validators: []tfsdk.AttributeValidator{
+			validators.ConflictsWith("port"),
+		},
 	}
 
 	address := tfsdk.Attribute{
 		Type:        tftypes.StringType,
 		Optional:    true,
-		Description: "The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`.",
+		Description: "The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`. Conflicts with `address_group`.",
 		Validators: []tfsdk.AttributeValidator{
 			validators.Cidr(),
+			validators.ConflictsWith("address_group"),
 		},
 	}
 
 	addressGroup := tfsdk.Attribute{
 		Type:        tftypes.StringType,
 		Optional:    true,
-		Description: "The address group this rule applies to. If not provided, all addresses will be matched.",
-	}
-
-	portGroup := tfsdk.Attribute{
-		Type:        tftypes.StringType,
-		Optional:    true,
-		Description: "The port group this rule applies to. If not provided, all ports will be matched.",
+		Description: "The address group this rule applies to. If not provided, all addresses will be matched. Conflicts with `address`.",
+		Validators: []tfsdk.AttributeValidator{
+			validators.ConflictsWith("address"),
+		},
 	}
 
 	return tfsdk.Schema{

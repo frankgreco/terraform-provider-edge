@@ -69,10 +69,10 @@ Optional:
 
 Optional:
 
-- **address** (String) The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`.
-- **address_group** (String) The address group this rule applies to. If not provided, all addresses will be matched.
-- **port** (Attributes) A port range. (see [below for nested schema](#nestedatt--rule--destination--port))
-- **port_group** (String) The port group this rule applies to. If not provided, all ports will be matched.
+- **address** (String) The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`. Conflicts with `address_group`.
+- **address_group** (String) The address group this rule applies to. If not provided, all addresses will be matched. Conflicts with `address`.
+- **port** (Attributes) A port range. Conflicts with `port_group`. (see [below for nested schema](#nestedatt--rule--destination--port))
+- **port_group** (String) The port group this rule applies to. If not provided, all ports will be matched. Conflicts with `port`.
 
 <a id="nestedatt--rule--destination--port"></a>
 ### Nested Schema for `rule.destination.port`
@@ -89,11 +89,11 @@ Optional:
 
 Optional:
 
-- **address** (String) The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`.
-- **address_group** (String) The address group this rule applies to. If not provided, all addresses will be matched.
+- **address** (String) The cidr this rule applies to. If not provided, it is treated as `0.0.0.0/0`. Conflicts with `address_group`.
+- **address_group** (String) The address group this rule applies to. If not provided, all addresses will be matched. Conflicts with `address`.
 - **mac** (String)
-- **port** (Attributes) A port range. (see [below for nested schema](#nestedatt--rule--source--port))
-- **port_group** (String) The port group this rule applies to. If not provided, all ports will be matched.
+- **port** (Attributes) A port range. Conflicts with `port_group`. (see [below for nested schema](#nestedatt--rule--source--port))
+- **port_group** (String) The port group this rule applies to. If not provided, all ports will be matched. Conflicts with `port`.
 
 <a id="nestedatt--rule--source--port"></a>
 ### Nested Schema for `rule.source.port`

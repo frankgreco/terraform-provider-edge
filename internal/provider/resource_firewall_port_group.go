@@ -25,6 +25,9 @@ func (r resourceFirewallPortGroupType) GetSchema(_ context.Context) (tfsdk.Schem
 				Required:      true,
 				PlanModifiers: []tfsdk.AttributePlanModifier{tfsdk.RequiresReplace()},
 				Description:   "A unique, human readable name for this port group.",
+				Validators: []tfsdk.AttributeValidator{
+					validators.NoWhitespace(),
+				},
 			},
 			"description": {
 				Type:        tfftypes.StringType,

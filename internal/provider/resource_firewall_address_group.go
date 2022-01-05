@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/frankgreco/edge-sdk-go/types"
+	"github.com/frankgreco/terraform-helpers/validators"
 	"github.com/mattbaird/jsonpatch"
 
 	"terraform-provider-edge/internal/utils"
@@ -24,6 +25,9 @@ func (r resourceFirewallAddressGroupType) GetSchema(_ context.Context) (tfsdk.Sc
 				Required:      true,
 				PlanModifiers: []tfsdk.AttributePlanModifier{tfsdk.RequiresReplace()},
 				Description:   "A unique, human readable name for this address group.",
+				Validators: []tfsdk.AttributeValidator{
+					validators.NoWhitespace(),
+				},
 			},
 			"description": {
 				Type:        tfftypes.StringType,
