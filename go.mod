@@ -77,7 +77,7 @@ require (
 )
 
 // For local development:
-// github.com/frankgreco/edge-sdk-go => ../edge-sdk-go
-replace github.com/frankgreco/terraform-helpers => ../terraform-helpers
+// replace github.com/frankgreco/edge-sdk-go => ../edge-sdk-go
+// replace github.com/frankgreco/terraform-helpers => ../terraform-helpers
 
 replace google.golang.org/api => google.golang.org/api v0.63.0
