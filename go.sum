@@ -92,8 +92,8 @@ github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5Kwzbycv
 github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568/go.mod h1:xEzjJPgXI435gkrCt3MPfRiAkVrwSbHsst4LCFVfpJc=
 github.com/frankgreco/edge-sdk-go v0.0.2-pre h1:2PjG3IyHqKfjblZa4Gzn85gqHgaYO7Q+1fvP/NWQBVY=
 github.com/frankgreco/edge-sdk-go v0.0.2-pre/go.mod h1:6dXH12TAP9AOlXclxvW07g6iPNCKzXgu/P24gnLEJG4=
-github.com/frankgreco/terraform-helpers v0.0.1 h1:jE0+Yh+lulsQXDWuAHslnbej3HOkPxvPX6F/PSRxsLI=
-github.com/frankgreco/terraform-helpers v0.0.1/go.mod h1:aiUVc5wLgdO9SxrklcJR5ltQPsGoFWh0QdG+tl0bYhU=
+github.com/frankgreco/terraform-helpers v0.0.2 h1:boN7DvQSCvX7KulvYx9HNPyuCkj/KhmxyHPZe+VBcts=
+github.com/frankgreco/terraform-helpers v0.0.2/go.mod h1:zp4pto09lW2QA1zLYyInueJ7GaoVddRJJnHpoaUE7og=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/gliderlabs/ssh v0.2.2/go.mod h1:U7qILu1NlMHj9FlMhZLlkCdDnU1DBEAqr0aevW3Awn0=
 github.com/go-git/gcfg v1.5.0 h1:Q5ViNfGF8zFgyJWPqYwA7qGFoMTEiBmdlkcfRmpIMa4=

@@ -38,6 +38,9 @@ func (r resourceFirewallAddressGroupType) GetSchema(_ context.Context) (tfsdk.Sc
 				Type:        tfftypes.ListType{ElemType: tfftypes.StringType},
 				Optional:    true,
 				Description: "A non-overlapping list of cidrs.",
+				Validators: []tfsdk.AttributeValidator{
+					validators.NoOverlappingCIDRs(),
+				},
 			},
 		},
 	}, nil
