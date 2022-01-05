@@ -41,6 +41,7 @@ func (r resourceFirewallPortGroupType) GetSchema(_ context.Context) (tfsdk.Schem
 						Required: true,
 						Validators: []tfsdk.AttributeValidator{
 							validators.Range(float64(1), float64(65535.0)),
+							validators.Compare(validators.ComparatorLessThan, "to"),
 						},
 					},
 					"to": {
@@ -53,15 +54,18 @@ func (r resourceFirewallPortGroupType) GetSchema(_ context.Context) (tfsdk.Schem
 				}, tfsdk.ListNestedAttributesOptions{}),
 				Optional:    true,
 				Description: "A list of port ranges.",
-				// Need a validator that ensures from != to.
+				Validators: []tfsdk.AttributeValidator{
+					validators.NoOverlap(),
+				},
 			},
 			"ports": {
 				Type:        tfftypes.ListType{ElemType: tfftypes.NumberType},
 				Optional:    true,
 				Description: "A list of port numbers.",
-				// Need a validator that ensures no duplicates.
+				Validators:  []tfsdk.AttributeValidator{
+					validators.NoOverlap(),
+				},
 			},
-			// Need a validator that ensures no duplicates exist.
 		},
 	}, nil
 }

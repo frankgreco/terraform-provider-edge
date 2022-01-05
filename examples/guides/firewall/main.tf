@@ -59,7 +59,7 @@ resource "edge_firewall_ruleset" "router" {
     destination = {
       address_group = edge_firewall_address_group.router.name
       port = {
-          from = 22
+          from = 23
           to   = 22
       }
     }

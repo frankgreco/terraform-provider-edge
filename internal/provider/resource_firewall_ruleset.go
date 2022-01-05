@@ -25,6 +25,7 @@ func (r resourceFirewallRulesetType) GetSchema(_ context.Context) (tfsdk.Schema,
 				Required: true,
 				Validators: []tfsdk.AttributeValidator{
 					validators.Range(float64(1), float64(65535.0)),
+					validators.Compare(validators.ComparatorLessThanEqual, "to"),
 				},
 			},
 			"to": {
