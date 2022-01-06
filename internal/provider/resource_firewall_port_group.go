@@ -62,7 +62,7 @@ func (r resourceFirewallPortGroupType) GetSchema(_ context.Context) (tfsdk.Schem
 				Type:        tfftypes.ListType{ElemType: tfftypes.NumberType},
 				Optional:    true,
 				Description: "A list of port numbers.",
-				Validators:  []tfsdk.AttributeValidator{
+				Validators: []tfsdk.AttributeValidator{
 					validators.NoOverlap(),
 				},
 			},

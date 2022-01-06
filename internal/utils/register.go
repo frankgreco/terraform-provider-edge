@@ -30,6 +30,7 @@ func retrieve(ctx context.Context, r terraformRetriever, target interface{}) (in
 	case types.Ruleset:
 		var tmp types.Ruleset
 		diags := r.Get(ctx, &tmp)
+		(&tmp).SetCodecMode(types.CodecModeLocal)
 		return tmp, diags
 	default:
 		var diags diag.Diagnostics
