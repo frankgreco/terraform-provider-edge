@@ -70,11 +70,6 @@ resource "edge_firewall_ruleset" "router" {
   }
 }
 
-// resource "edge_firewall_ruleset_attachment" "eth1" {
-//   interface = data.edge_interface_ethernet.eth1.id 
-//   in        = edge_firewall_ruleset.router.name
-// }
-
 resource "edge_firewall_ruleset_attachment" "eth2" {
   interface = data.edge_interface_ethernet.eth2.id 
   in        = edge_firewall_ruleset.router.name

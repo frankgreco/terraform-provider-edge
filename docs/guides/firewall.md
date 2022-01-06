@@ -69,7 +69,7 @@ resource "edge_firewall_ruleset" "router" {
     destination = {
       address_group = edge_firewall_address_group.router.name
       port = {
-          from = 22
+          from = 23
           to   = 22
       }
     }
@@ -79,11 +79,6 @@ resource "edge_firewall_ruleset" "router" {
     }
   }
 }
-
-// resource "edge_firewall_ruleset_attachment" "eth1" {
-//   interface = data.edge_interface_ethernet.eth1.id 
-//   in        = edge_firewall_ruleset.router.name
-// }
 
 resource "edge_firewall_ruleset_attachment" "eth2" {
   interface = data.edge_interface_ethernet.eth2.id 

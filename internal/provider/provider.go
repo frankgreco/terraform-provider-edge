@@ -2,7 +2,9 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"os"
+	"strings"
 
 	"github.com/frankgreco/edge-sdk-go"
 
@@ -46,6 +48,11 @@ The Edge provider provides the ability to configure a Ubiquiti Edge device.
 				Sensitive:   true,
 				Description: "Admin password. Can be set with `EDGE_PASSWORD`.",
 			},
+			"insecure": {
+				Type:        types.BoolType,
+				Optional:    true,
+				Description: "Specify if the connection to the Edge configuration API should be insecure. Can be set with `EDGE_INSECURE`.",
+			},
 		},
 	}, nil
 }
@@ -54,99 +61,59 @@ type providerData struct {
 	Username types.String `tfsdk:"username"`
 	Host     types.String `tfsdk:"host"`
 	Password types.String `tfsdk:"password"`
+	Insecure types.Bool   `tfsdk:"insecure"`
 }
 
 func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderRequest, resp *tfsdk.ConfigureProviderResponse) {
 	var config providerData
 	{
-		diags := req.Config.Get(ctx, &config)
-		resp.Diagnostics.Append(diags...)
+		resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 		if resp.Diagnostics.HasError() {
 			return
 		}
 	}
 
-	var username string
-	{
-		if config.Username.Unknown {
-			resp.Diagnostics.AddWarning(
-				"Unable to create client",
-				"Cannot use unknown value as username",
-			)
-			return
-		}
-		if config.Username.Null {
-			username = os.Getenv("EDGE_USERNAME")
-		} else {
-			username = config.Username.Value
-		}
-
-		if username == "" {
-			resp.Diagnostics.AddError(
-				"Unable to find username",
-				"Username cannot be an empty string",
-			)
-			return
-		}
-	}
-
-	// User must provide a password to the provider
-	var password string
-	if config.Password.Unknown {
-		// Cannot connect to client with an unknown value
-		resp.Diagnostics.AddError(
-			"Unable to create client",
-			"Cannot use unknown value as password",
-		)
-		return
-	}
-
-	if config.Password.Null {
-		password = os.Getenv("EDGE_PASSWORD")
-	} else {
-		password = config.Password.Value
-	}
-
-	if password == "" {
-		// Error vs warning - empty value must stop execution
-		resp.Diagnostics.AddError(
-			"Unable to find password",
-			"password cannot be an empty string",
-		)
-		return
-	}
-
-	// User must specify a host
-	var host string
-	if config.Host.Unknown {
-		// Cannot connect to client with an unknown value
-		resp.Diagnostics.AddError(
-			"Unable to create client",
-			"Cannot use unknown value as host",
-		)
-		return
-	}
-
-	if config.Host.Null {
-		host = os.Getenv("EDGE_HOST")
-	} else {
-		host = config.Host.Value
-	}
-
-	if host == "" {
-		// Error vs warning - empty value must stop execution
-		resp.Diagnostics.AddError(
-			"Unable to find host",
-			"Host cannot be an empty string",
-		)
-		return
-	}
-
-	c, err := edge.Login(host, username, password)
+	username, err := requiredString(config.Username, "username", "EDGE_USERNAME")
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Unable to create client",
-			"Unable to create edge client:\n\n"+err.Error(),
+			"Unable to configure provider",
+			err.Error(),
+		)
+	}
+
+	password, err := requiredString(config.Password, "password", "EDGE_PASSWORD")
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to configure provider",
+			err.Error(),
+		)
+	}
+
+	host, err := requiredString(config.Host, "host", "EDGE_HOST")
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to configure provider",
+			err.Error(),
+		)
+	}
+
+	var insecure bool
+	{
+		if !config.Insecure.Null && !config.Insecure.Unknown {
+			insecure = config.Insecure.Value
+		}
+		if strings.ToUpper(os.Getenv("EDGE_INSECURE")) == "TRUE" {
+			insecure = true
+		} else if strings.ToUpper(os.Getenv("EDGE_INSECURE")) == "FALSE" {
+			insecure = false
+		}
+	}
+
+	c, err := edge.Login(host, insecure, username, password)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to configure provider",
+			"Unable to create edge client: "+err.Error(),
 		)
 		return
 	}
@@ -168,4 +135,22 @@ func (p *provider) GetDataSources(_ context.Context) (map[string]tfsdk.DataSourc
 	return map[string]tfsdk.DataSourceType{
 		"edge_interface_ethernet": dataSourceInterfaceEthernetType{},
 	}, nil
+}
+
+func requiredString(str types.String, name, env string) (string, error) {
+	if str.Unknown {
+		return "", fmt.Errorf("Cannot use unknown value for %s.", name)
+	}
+
+	val := str.Value
+
+	if str.Null {
+		val = os.Getenv(env)
+	}
+
+	if val == "" {
+		return "", fmt.Errorf("The provider attribute %s must be defined.", name)
+	}
+
+	return val, nil
 }

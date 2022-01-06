@@ -20,6 +20,7 @@ provider "edge" {
 	username = var.username # optionally use EDGE_USERNAME env var
 	password = var.password # optionally use EDGE_PASSWORD env var
 	host  	 = var.host     # optionally use EDGE_HOST env var
+	insecure = var.insecure # optionally use EDGE_INSECURE env var
 }
 ```
 
@@ -29,5 +30,6 @@ provider "edge" {
 ### Optional
 
 - **host** (String) Edge router URL. Can be set with `EDGE_HOST`.
+- **insecure** (Boolean) Specify if the connection to the Edge configuration API should be insecure. Can be set with `EDGE_INSECURE`.
 - **password** (String, Sensitive) Admin password. Can be set with `EDGE_PASSWORD`.
 - **username** (String) Admin username. Can be set with `EDGE_USERNAME`.

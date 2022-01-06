@@ -6,3 +6,6 @@ variable "password" {
 
 variable "host" {
 }
+
+variable "insecure" {
+}
