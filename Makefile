@@ -38,7 +38,7 @@ fmt:
 define docs-generate-sum
 	rm -f $@; \
 	( \
-		find internal/provider examples -type f -not -ipath '*terraform*' -print0 | xargs -0 sha256sum; \
+		find templates internal/provider examples -name '*schema_*' -o -path '*examples*' -not -path '*.terraform*' -not -path 'examples/guides/*/provider.tf' -type f -o -path '*templates*' -type f | xargs sha256sum; \
 	) | sort -k 2 > $@
 endef
 

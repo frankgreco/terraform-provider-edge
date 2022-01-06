@@ -10,38 +10,12 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
-	tfftypes "github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type resourceFirewallRulesetAttachmentType struct{}
 
 func (r resourceFirewallRulesetAttachmentType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
-	return tfsdk.Schema{
-		Description: "Attach a firewall ruleset to inbound, outbound, and local traffic.",
-		Attributes: map[string]tfsdk.Attribute{
-			"interface": {
-				Type:          tfftypes.StringType,
-				Required:      true,
-				PlanModifiers: []tfsdk.AttributePlanModifier{tfsdk.RequiresReplace()},
-				Description:   "The interface to attach firewall rules to.",
-			},
-			"in": {
-				Type:        tfftypes.StringType,
-				Optional:    true,
-				Description: "Match inbound packets.",
-			},
-			"out": {
-				Type:        tfftypes.StringType,
-				Optional:    true,
-				Description: "Match outbound packets.",
-			},
-			"local": {
-				Type:        tfftypes.StringType,
-				Optional:    true,
-				Description: "Match local packets.",
-			},
-		},
-	}, nil
+	return schemaFirewallRulesetAttachment(), nil
 }
 
 func (r resourceFirewallRulesetAttachmentType) NewResource(_ context.Context, p tfsdk.Provider) (tfsdk.Resource, diag.Diagnostics) {

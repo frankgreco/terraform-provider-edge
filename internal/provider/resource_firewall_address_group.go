@@ -4,46 +4,18 @@ import (
 	"context"
 
 	"github.com/frankgreco/edge-sdk-go/types"
-	"github.com/frankgreco/terraform-helpers/validators"
 	"github.com/mattbaird/jsonpatch"
 
 	"terraform-provider-edge/internal/utils"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
-	tfftypes "github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type resourceFirewallAddressGroupType struct{}
 
 func (r resourceFirewallAddressGroupType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
-	return tfsdk.Schema{
-		Description: "A logical grouping of addresses.",
-		Attributes: map[string]tfsdk.Attribute{
-			"name": {
-				Type:          tfftypes.StringType,
-				Required:      true,
-				PlanModifiers: []tfsdk.AttributePlanModifier{tfsdk.RequiresReplace()},
-				Description:   "A unique, human readable name for this address group.",
-				Validators: []tfsdk.AttributeValidator{
-					validators.NoWhitespace(),
-				},
-			},
-			"description": {
-				Type:        tfftypes.StringType,
-				Optional:    true,
-				Description: "A human readable description for this address group.",
-			},
-			"cidrs": {
-				Type:        tfftypes.ListType{ElemType: tfftypes.StringType},
-				Optional:    true,
-				Description: "A non-overlapping list of cidrs.",
-				Validators: []tfsdk.AttributeValidator{
-					validators.NoOverlappingCIDRs(),
-				},
-			},
-		},
-	}, nil
+	return schemaFirewallAddressGroup(), nil
 }
 
 func (r resourceFirewallAddressGroupType) NewResource(_ context.Context, p tfsdk.Provider) (tfsdk.Resource, diag.Diagnostics) {
