@@ -42,7 +42,8 @@ func (r resourceFirewallRulesetAttachment) Create(ctx context.Context, plan inte
 }
 
 func (r resourceFirewallRulesetAttachment) Update(ctx context.Context, current interface{}, patches []jsonpatch.JsonPatchOperation) (interface{}, error) {
-	return r.p.client.Interfaces.Ethernet.UpdateFirewallRulesetAttachment(ctx, current.(*types.FirewallAttachment), patches)
+	attachment := current.(types.FirewallAttachment)
+	return r.p.client.Interfaces.Ethernet.UpdateFirewallRulesetAttachment(ctx, &attachment, patches)
 }
 
 func (r resourceFirewallRulesetAttachment) Delete(ctx context.Context, id string) error {

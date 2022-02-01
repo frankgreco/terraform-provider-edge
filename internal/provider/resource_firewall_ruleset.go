@@ -42,7 +42,8 @@ func (r resourceFirewallRuleset) Create(ctx context.Context, plan interface{}) (
 }
 
 func (r resourceFirewallRuleset) Update(ctx context.Context, current interface{}, patches []jsonpatch.JsonPatchOperation) (interface{}, error) {
-	return r.p.client.Firewall.UpdateRuleset(ctx, current.(*types.Ruleset), patches)
+	ruleset := current.(types.Ruleset)
+	return r.p.client.Firewall.UpdateRuleset(ctx, &ruleset, patches)
 }
 
 func (r resourceFirewallRuleset) Delete(ctx context.Context, id string) error {

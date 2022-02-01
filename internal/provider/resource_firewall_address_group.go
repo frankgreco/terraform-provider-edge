@@ -42,7 +42,8 @@ func (r resourceFirewallAddressGroup) Create(ctx context.Context, plan interface
 }
 
 func (r resourceFirewallAddressGroup) Update(ctx context.Context, current interface{}, patches []jsonpatch.JsonPatchOperation) (interface{}, error) {
-	return r.p.client.Firewall.UpdateAddressGroup(ctx, current.(*types.AddressGroup), patches)
+	group := current.(types.AddressGroup)
+	return r.p.client.Firewall.UpdateAddressGroup(ctx, &group, patches)
 }
 
 func (r resourceFirewallAddressGroup) Delete(ctx context.Context, id string) error {

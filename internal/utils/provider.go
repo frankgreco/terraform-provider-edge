@@ -316,7 +316,7 @@ func UpdateFunc(
 		log.Printf("[DEBUG] patch document: %+v", patches)
 	}
 
-	updated, err := f(ctx, &current, patches)
+	updated, err := f(ctx, current, patches)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			fmt.Sprintf("There was an issue updating the.", name),
