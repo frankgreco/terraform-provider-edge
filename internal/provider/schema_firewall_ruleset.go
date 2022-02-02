@@ -5,6 +5,60 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"terraform-provider-edge/internal/utils"
+)
+
+var (
+	protocols = []string{
+		"tcp",
+		"udp",
+		"tcp_udp",
+		"ah",
+		"ax.25",
+		"dccp",
+		"ddp",
+		"egp",
+		"eigrp",
+		"encap",
+		"esp",
+		"etherip",
+		"fc",
+		"ggp",
+		"gre",
+		"hip",
+		"hmp",
+		"icmp",
+		"idpr-cmtp",
+		"idpr",
+		"igmp",
+		"igp",
+		"ip",
+		"ipcomp",
+		"ipencap",
+		"ipip",
+		"isis",
+		"iso-tp4",
+		"l2tp",
+		"manet",
+		"mpls-in-ip",
+		"ospf",
+		"pim",
+		"pup",
+		"rdp",
+		"rohc",
+		"rspf",
+		"rsvp",
+		"sctp",
+		"skip",
+		"st",
+		"udplite",
+		"vmtp",
+		"vrrp",
+		"wesp",
+		"xns-idp",
+		"xtp",
+	}
 )
 
 func schemaFirewallRuleset() tfsdk.Schema {
@@ -115,9 +169,15 @@ func schemaFirewallRuleset() tfsdk.Schema {
 					"protocol": {
 						Type:        types.StringType,
 						Optional:    true,
-						Description: "The protocol this rule applies to. If not specified, this rule applies to all protcols. Must be one of `tcp`, `udp`, `tcp_udp`.",
+						Description: "The protocol this rule applies to. If not specified, this rule applies to all protcols. Values prefixed with `!` specifies a _not_ behavior. If `!` is provided, this rule applies to all protocols except this one.",
 						Validators: []tfsdk.AttributeValidator{
-							validators.StringInSlice(true, "tcp", "udp", "tcp_udp", "all", "*"),
+							validators.StringInSlice(true, append(
+								append(
+									protocols,
+									utils.WithPrefix("!", protocols)...,
+								),
+								"all", "*",
+							)...),
 						},
 					},
 					"state": {

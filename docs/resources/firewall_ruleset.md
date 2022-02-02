@@ -60,7 +60,7 @@ Optional:
 
 - **description** (String) A human readable description for this rule.
 - **destination** (Attributes) Details about the traffic's destination. If not specified, all sources will be evaluated. (see [below for nested schema](#nestedatt--rule--destination))
-- **protocol** (String) The protocol this rule applies to. If not specified, this rule applies to all protcols. Must be one of `tcp`, `udp`, `tcp_udp`.
+- **protocol** (String) The protocol this rule applies to. If not specified, this rule applies to all protcols. Values prefixed with `!` specifies a _not_ behavior. If `!` is provided, this rule applies to all protocols except this one.
 - **source** (Attributes) Details about the traffic's source. If not specified, all sources will be evaluated. (see [below for nested schema](#nestedatt--rule--source))
 - **state** (Attributes) This describes the connection state of a packet. (see [below for nested schema](#nestedatt--rule--state))
 
