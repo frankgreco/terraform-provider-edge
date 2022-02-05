@@ -1,9 +1,9 @@
 module terraform-provider-edge
 
-go 1.17
+go 1.18
 
 require (
-	github.com/frankgreco/edge-sdk-go v0.1.2
+	github.com/frankgreco/edge-sdk-go v0.1.3
 	github.com/frankgreco/terraform-helpers v0.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.5.1
 	github.com/hashicorp/terraform-plugin-framework v0.5.0
