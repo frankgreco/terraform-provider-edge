@@ -17,7 +17,7 @@ terraform {
   required_providers {
     edge = {
       source  = "frankgreco/edge"
-      version = "0.1.5"
+      version = "0.1.6"
     }
   }
 }
