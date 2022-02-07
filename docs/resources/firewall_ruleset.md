@@ -17,12 +17,14 @@ resource "edge_firewall_ruleset" "example" {
   name            = "example"
   description     = "drop all traffic on its way to 192.168.2.1/24 over port 80"
   default_action  = "accept"
+  default_logging = true
 
   rule {
     priority    = 10
     description = "ssh"
     action      = "drop" 
     protocol    = "tcp"
+    log         = true
 
     destination = {
       address = "192.168.2.1/24"
@@ -45,6 +47,7 @@ resource "edge_firewall_ruleset" "example" {
 
 ### Optional
 
+- **default_logging** (Boolean) Turn on logging for this rule. These rotated logs can be found in /var/log/messages on your router.
 - **description** (String) A human readable description for this ruleset.
 - **rule** (Block Set) (see [below for nested schema](#nestedblock--rule))
 
@@ -60,6 +63,7 @@ Optional:
 
 - **description** (String) A human readable description for this rule.
 - **destination** (Attributes) Details about the traffic's destination. If not specified, all sources will be evaluated. (see [below for nested schema](#nestedatt--rule--destination))
+- **log** (Boolean) Turn on logging for this rule. These rotated logs can be found in /var/log/messages on your router.
 - **protocol** (String) The protocol this rule applies to. If not specified, this rule applies to all protcols. Values prefixed with `!` specifies a _not_ behavior. If `!` is provided, this rule applies to all protocols except this one.
 - **source** (Attributes) Details about the traffic's source. If not specified, all sources will be evaluated. (see [below for nested schema](#nestedatt--rule--source))
 - **state** (Attributes) This describes the connection state of a packet. (see [below for nested schema](#nestedatt--rule--state))

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.6] - 2022-02-07
+### Added
+- Support for optional field `edge_firewall_ruleset.default_logging`.
+- Support for optional field `edge_firewall_ruleset.rules[*].log`.
+### Changed
+- Updated `edge-sdk-go` dependency which fixed a bug that prevented updates from working for certain resources.
+
 ## [0.1.5] - 2022-02-05
 ### Changed
 - Updated `edge-sdk-go` dependency which fixed a bug that prevented null values for fields in the state field of ruleset if state was not null.

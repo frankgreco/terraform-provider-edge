@@ -140,6 +140,11 @@ func schemaFirewallRuleset() tfsdk.Schema {
 					validators.StringInSlice(true, "reject", "drop", "accept"),
 				},
 			},
+			"default_logging": {
+				Type:        types.BoolType,
+				Optional:    true,
+				Description: "Turn on logging for this rule. These rotated logs can be found in /var/log/messages on your router.",
+			},
 		},
 		Blocks: map[string]tfsdk.Block{
 			"rule": {
@@ -157,6 +162,11 @@ func schemaFirewallRuleset() tfsdk.Schema {
 						Type:        types.StringType,
 						Optional:    true,
 						Description: "A human readable description for this rule.",
+					},
+					"log": {
+						Type:        types.BoolType,
+						Optional:    true,
+						Description: "Turn on logging for this rule. These rotated logs can be found in /var/log/messages on your router.",
 					},
 					"action": {
 						Type:        types.StringType,

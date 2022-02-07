@@ -37,12 +37,14 @@ resource "edge_firewall_ruleset" "router" {
   name            = "router"
   description     = "router bound traffic"
   default_action  = "drop"
+  default_logging = true
 
   rule {
     priority    = 10
     description = "common known ports"
     action      = "accept" 
     protocol    = "all"
+    log         = true
 
     destination = {
       address_group = edge_firewall_address_group.router.name

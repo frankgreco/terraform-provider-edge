@@ -15,7 +15,7 @@ import (
 type api interface {
 	Read(context.Context, string) (interface{}, error)
 	Create(context.Context, interface{}) (interface{}, error)
-	Update(context.Context, interface{}, []jsonpatch.JsonPatchOperation) (interface{}, error)
+	Update(context.Context, interface{}, interface{}, []jsonpatch.JsonPatchOperation) (interface{}, error)
 	Delete(context.Context, string) error
 }
 
@@ -260,7 +260,7 @@ func UpdateFunc(
 	resp *tfsdk.UpdateResourceResponse,
 	name string,
 	resourceType interface{},
-	f func(context.Context, interface{}, []jsonpatch.JsonPatchOperation) (interface{}, error),
+	f func(context.Context, interface{}, interface{}, []jsonpatch.JsonPatchOperation) (interface{}, error),
 ) {
 	log.Printf("[TRACE] begin update func for %s", name)
 	defer func() {
@@ -284,7 +284,7 @@ func UpdateFunc(
 
 	var patches []jsonpatch.JsonPatchOperation
 	{
-		cData, err := json.Marshal(&current)
+		cData, err := json.Marshal(current)
 		if err != nil {
 			resp.Diagnostics.AddError(
 				fmt.Sprintf("Could not marshal %s from state", name),
@@ -294,7 +294,7 @@ func UpdateFunc(
 		}
 		log.Printf("[TRACE] current %s json: %s", name, string(cData))
 
-		dData, err := json.Marshal(&desired)
+		dData, err := json.Marshal(desired)
 		if err != nil {
 			resp.Diagnostics.AddError(
 				fmt.Sprintf("Could not marshal %s from plan", name),
@@ -316,10 +316,10 @@ func UpdateFunc(
 		log.Printf("[DEBUG] patch document: %+v", patches)
 	}
 
-	updated, err := f(ctx, current, patches)
+	updated, err := f(ctx, current, desired, patches)
 	if err != nil {
 		resp.Diagnostics.AddError(
-			fmt.Sprintf("There was an issue updating the.", name),
+			fmt.Sprintf("There was an issue updating the %s.", name),
 			err.Error(),
 		)
 		return

@@ -41,7 +41,7 @@ func (r resourceFirewallPortGroup) Create(ctx context.Context, plan interface{})
 	return r.p.client.Firewall.CreatePortGroup(ctx, &group)
 }
 
-func (r resourceFirewallPortGroup) Update(ctx context.Context, current interface{}, patches []jsonpatch.JsonPatchOperation) (interface{}, error) {
+func (r resourceFirewallPortGroup) Update(ctx context.Context, current, desired interface{}, patches []jsonpatch.JsonPatchOperation) (interface{}, error) {
 	group := current.(types.PortGroup)
 	return r.p.client.Firewall.UpdatePortGroup(ctx, &group, patches)
 }
