@@ -1,11 +1,12 @@
-PROTOS		:= $(wildcard pkg/apis/*/*/*.proto)
-ALL_SRC		:= $(shell find . -name "*.go" | grep -v -e vendor)
-HOSTNAME	=frankgreco
-NAMESPACE	=ubiquiti
-NAME		=edge
-BINARY		=terraform-provider-${NAME}
-VERSION		=0.0.1
-OS_ARCH		=darwin_amd64
+PROTOS			:= $(wildcard pkg/apis/*/*/*.proto)
+ALL_SRC			:= $(shell find . -name "*.go" | grep -v -e vendor)
+HOSTNAME		=frankgreco
+NAMESPACE		=ubiquiti
+NAME			=edge
+BINARY			=terraform-provider-${NAME}
+VERSION			=0.0.1
+OS_ARCH			=darwin_amd64
+ACCTEST_TIMEOUT =5m
 
 default: install
 
@@ -56,6 +57,9 @@ docs-generate.sum.current: .FORCE
 
 .PHONY: generate
 generate: docs-generate.sum
+
+testacc:
+	TF_ACC=1 go test ./internal/provider/... -v -parallel 1 -timeout $(ACCTEST_TIMEOUT)
 
 .PHONY: .FORCE
 .FORCE:

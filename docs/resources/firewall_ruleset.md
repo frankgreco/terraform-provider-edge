@@ -51,6 +51,10 @@ resource "edge_firewall_ruleset" "example" {
 - **description** (String) A human readable description for this ruleset.
 - **rule** (Block Set) (see [below for nested schema](#nestedblock--rule))
 
+### Read-Only
+
+- **id** (String) The identifier of the resource. This will always be the name. It is present only for legacy purposes.
+
 <a id="nestedblock--rule"></a>
 ### Nested Schema for `rule`
 

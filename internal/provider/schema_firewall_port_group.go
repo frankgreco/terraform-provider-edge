@@ -11,6 +11,11 @@ func schemaFirewallPortGroup() tfsdk.Schema {
 	return tfsdk.Schema{
 		Description: "A logical grouping of ports.",
 		Attributes: map[string]tfsdk.Attribute{
+			"id": {
+				Description: "The identifier of the resource. This will always be the name. It is present only for legacy purposes.",
+				Type:        types.StringType,
+				Computed:    true,
+			},
 			"name": {
 				Type:          types.StringType,
 				Required:      true,
@@ -24,6 +29,9 @@ func schemaFirewallPortGroup() tfsdk.Schema {
 				Type:        types.StringType,
 				Optional:    true,
 				Description: "A human readable description for this port group.",
+				Validators: []tfsdk.AttributeValidator{
+					validators.MinLength(1),
+				},
 			},
 			"port_ranges": {
 				Attributes: tfsdk.ListNestedAttributes(map[string]tfsdk.Attribute{

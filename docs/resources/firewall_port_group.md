@@ -42,6 +42,10 @@ resource "edge_firewall_port_group" "example" {
 - **port_ranges** (Attributes List) A list of port ranges. (see [below for nested schema](#nestedatt--port_ranges))
 - **ports** (List of Number) A list of port numbers.
 
+### Read-Only
+
+- **id** (String) The identifier of the resource. This will always be the name. It is present only for legacy purposes.
+
 <a id="nestedatt--port_ranges"></a>
 ### Nested Schema for `port_ranges`
 

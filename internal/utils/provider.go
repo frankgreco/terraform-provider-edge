@@ -115,8 +115,11 @@ func ImportFunc(
 		return
 	}
 
-	diagnostics := resp.State.Set(ctx, actual)
-	resp.Diagnostics.Append(diagnostics...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, actual)...)
+	if v, ok := actual.(hasID); ok {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, tftypes.NewAttributePath().WithAttributeName("id"), v.GetID())...)
+	}
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -202,6 +205,10 @@ func CreateFunc(
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, actual)...)
+	if v, ok := actual.(hasID); ok {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, tftypes.NewAttributePath().WithAttributeName("id"), v.GetID())...)
+	}
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -248,6 +255,10 @@ func ReadFunc(
 	}
 
 	diagnostics := resp.State.Set(ctx, actual)
+	if v, ok := actual.(hasID); ok {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, tftypes.NewAttributePath().WithAttributeName("id"), v.GetID())...)
+	}
+
 	resp.Diagnostics.Append(diagnostics...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -326,6 +337,10 @@ func UpdateFunc(
 	}
 
 	diagnostics := resp.State.Set(ctx, updated)
+	if v, ok := updated.(hasID); ok {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, tftypes.NewAttributePath().WithAttributeName("id"), v.GetID())...)
+	}
+
 	resp.Diagnostics.Append(diagnostics...)
 	if resp.Diagnostics.HasError() {
 		return

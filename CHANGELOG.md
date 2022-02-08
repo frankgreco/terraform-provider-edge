@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Acceptance tests for `edge_firewall_port_group`.
+### Changed
+- Added a new validator to all of the `description` attributes. While it can be `null`, if it is set, it must have a length of at least 1.
+
 ## [0.1.6] - 2022-02-07
 ### Added
 - Support for optional field `edge_firewall_ruleset.default_logging`.

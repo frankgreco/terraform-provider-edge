@@ -40,4 +40,8 @@ resource "edge_firewall_ruleset_attachment" "foo" {
 - **local** (String) Match local packets.
 - **out** (String) Match outbound packets.
 
+### Read-Only
+
+- **id** (String) The identifier of the resource. This will always be the interface. It is present only for legacy purposes.
+
 

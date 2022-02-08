@@ -36,4 +36,8 @@ resource "edge_firewall_address_group" "example" {
 - **cidrs** (List of String) A non-overlapping list of cidrs.
 - **description** (String) A human readable description for this address group.
 
+### Read-Only
+
+- **id** (String) The identifier of the resource. This will always be the name. It is present only for legacy purposes.
+
 

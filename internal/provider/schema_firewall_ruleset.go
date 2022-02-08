@@ -118,6 +118,11 @@ func schemaFirewallRuleset() tfsdk.Schema {
 	return tfsdk.Schema{
 		Description: "A grouping of firewall rules. The firewall is not enforced unless attached to an interface which can be done with the `firewall_ruleset_attachment` resource.",
 		Attributes: map[string]tfsdk.Attribute{
+			"id": {
+				Description: "The identifier of the resource. This will always be the name. It is present only for legacy purposes.",
+				Type:        types.StringType,
+				Computed:    true,
+			},
 			"name": {
 				Description: "A unique, human readable name for this ruleset.",
 				Type:        types.StringType,
@@ -131,6 +136,9 @@ func schemaFirewallRuleset() tfsdk.Schema {
 				Description: "A human readable description for this ruleset.",
 				Type:        types.StringType,
 				Optional:    true,
+				Validators: []tfsdk.AttributeValidator{
+					validators.MinLength(1),
+				},
 			},
 			"default_action": {
 				Description: "The default action to take if traffic is not matched by one of the rules in the ruleset. Must be one of `reject`, `drop`, `accept`.",
@@ -162,6 +170,9 @@ func schemaFirewallRuleset() tfsdk.Schema {
 						Type:        types.StringType,
 						Optional:    true,
 						Description: "A human readable description for this rule.",
+						Validators: []tfsdk.AttributeValidator{
+							validators.MinLength(1),
+						},
 					},
 					"log": {
 						Type:        types.BoolType,
