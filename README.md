@@ -1,3 +1,5 @@
+[![acctest](https://github.com/frankgreco/terraform-provider-edge/actions/workflows/acctest.yml/badge.svg)](https://github.com/frankgreco/terraform-provider-edge/actions/workflows/acctest.yml)
+
 # EdgeOS Terraform Provider (terraform-provider-edge)
 > NOTE: This provider is under rapid active development.
 

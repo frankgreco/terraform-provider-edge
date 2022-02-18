@@ -1,0 +1,73 @@
+name: acctest
+
+on:
+  push:
+    paths-ignore:
+    - README.md
+    - docs/
+    branches:
+    - master
+  schedule:
+  - cron: "0 13 * * *"
+
+jobs:
+  acctest:
+    name: acctest
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.6
+
+      - name: install terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.1.6
+          terraform_wrapper: false
+
+      - name: install openvpn
+        run: |
+          sudo apt-get update
+          sudo apt-get --assume-yes --no-install-recommends install openvpn
+
+      - name: setup vpn
+        run: |
+          echo "${{ secrets.CA_CRT }}" > ca.crt
+          echo "${{ secrets.USER_CRT }}" > user.crt
+          echo "${{ secrets.USER_KEY }}" > user.key
+          sudo echo "${{ secrets.ROUTER_EXTERNAL_IP }} remote.server" | sudo tee -a /etc/hosts
+          chmod 600 ca.crt user.crt user.key
+
+      - name: connect vpn
+        run: sudo openvpn --config ".github/vpn/config.ovpn" --log "vpn.log" --daemon
+
+      - name: init vpn connection
+        timeout-minutes: 2
+        run: until ping -c1 ${{ secrets.EDGE_HOST }}; do sleep 2; done
+
+      - name: run acceptance tests
+        timeout-minutes: 10
+        env:
+          EDGE_USERNAME: ${{ secrets.EDGE_USERNAME }}
+          EDGE_PASSWORD: ${{ secrets.EDGE_PASSWORD }}
+          EDGE_INSECURE: ${{ secrets.EDGE_INSECURE }}
+          EDGE_HOST: https://${{ secrets.EDGE_HOST }}
+        run: |
+          make testacc
+
+      - name: kill vpn
+        if: always()
+        run: |
+          sudo chmod 777 vpn.log
+          sudo killall openvpn    
+
+      - name: upload vpn logs
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: VPN logs
+          path: vpn.log
