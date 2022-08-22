@@ -1,5 +1,9 @@
 PROTOS			:= $(wildcard pkg/apis/*/*/*.proto)
 ALL_SRC			:= $(shell find . -name "*.go" | grep -v -e vendor)
+PACKAGES 		:= $(shell go list ./...)
+PASS     		= $(shell printf "\033[32mPASS\033[0m")
+FAIL     		= $(shell printf "\033[31mFAIL\033[0m")
+COLORIZE 		= sed ''/PASS/s//$(PASS)/'' | sed ''/FAIL/s//$(FAIL)/''
 HOSTNAME		=frankgreco
 NAMESPACE		=ubiquiti
 NAME			=edge
@@ -7,6 +11,7 @@ BINARY			=terraform-provider-${NAME}
 VERSION			=0.0.1
 OS_ARCH			=darwin_amd64
 ACCTEST_TIMEOUT =5m
+GO_OPTIONS		= -buildvcs=false
 
 default: install
 
@@ -57,6 +62,15 @@ docs-generate.sum.current: .FORCE
 
 .PHONY: generate
 generate: docs-generate.sum
+
+.PHONY: deps
+deps:
+	@go mod download
+	@go mod tidy
+
+.PHONY: test
+test: deps
+	@bash -c "set -e; set -o pipefail; go test $(GO_OPTIONS) -v -race $(PACKAGES) | $(COLORIZE)"
 
 testacc:
 	TF_ACC=1 go test ./internal/provider/... -v -parallel 1 -timeout $(ACCTEST_TIMEOUT)
