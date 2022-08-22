@@ -4,6 +4,8 @@ name: " default"
 
 on:
   push:
+    paths-ignore:
+    - '*.md'
     branches:
     - '**'
 
