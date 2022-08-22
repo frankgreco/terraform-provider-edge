@@ -6,3 +6,5 @@ examples/guides/*/*.tfstate*
 examples/guides/*/provider.tf
 
 /docs-generate.sum.current
+
+.vscode/

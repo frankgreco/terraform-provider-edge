@@ -62,7 +62,7 @@ func TestAccEdgeFirewallPortGroup(t *testing.T) {
 				),
 			},
 			{
-				Config: toPortGroupResource(group.Clone().WithDescription(strptr(""))),
+				Config:      toPortGroupResource(group.Clone().WithDescription(strptr(""))),
 				ExpectError: regexp.MustCompile("String must be at least 1 characters long."),
 			},
 			{
