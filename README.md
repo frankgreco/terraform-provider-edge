@@ -1,7 +1,7 @@
 # EdgeOS Terraform Provider (terraform-provider-edge)
 
 [![acctest](https://github.com/frankgreco/terraform-provider-edge/actions/workflows/acctest.yml/badge.svg)](https://github.com/frankgreco/terraform-provider-edge/actions/workflows/acctest.yml)
-[![downloads](https://img.shields.io/badge/downloads-684%2Fmonth-blue)](https://img.shields.io/badge/downloads-684%2Fmonth-blue)
+[![downloads](https://img.shields.io/badge/downloads-1112%2Fmonth-blue)](https://img.shields.io/badge/downloads-684%2Fmonth-blue)
 
 Terraform wrapper for [edge-sdk-go](https://github.com/frankgreco/edge-sdk-go).
 
