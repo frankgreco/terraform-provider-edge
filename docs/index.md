@@ -29,7 +29,7 @@ provider "edge" {
 
 ### Optional
 
-- **host** (String) Edge router URL. Can be set with `EDGE_HOST`.
+- **host** (String) Edge router URL. Can be set with `EDGE_HOST`. Needs to be specified using the HTTPS protocol.
 - **insecure** (Boolean) Specify if the connection to the Edge configuration API should be insecure. Can be set with `EDGE_INSECURE`.
 - **password** (String, Sensitive) Admin password. Can be set with `EDGE_PASSWORD`.
 - **username** (String) Admin username. Can be set with `EDGE_USERNAME`.
